@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: Como Vender no WhatsApp em 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeInPage 0.6s ease forwards;
+        }
+
+        @keyframes fadeInPage {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Cabeçalho */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00C853, #25D366);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #0a0a0a;
+            margin: 0 auto 12px;
+            box-shadow: 0 4px 20px rgba(0, 200, 83, 0.3);
+            /* Substitua por uma imagem se desejar: background-image: url('sua-foto.jpg'); background-size: cover; */
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f1f1f1;
+            letter-spacing: -0.3px;
+        }
+
+        /* Barra de progresso */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #00C853;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 8px rgba(0, 200, 83, 0.5);
+        }
+
+        /* Container das perguntas */
+        .step {
+            display: none;
+            animation: slideIn 0.4s ease forwards;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #f0f0f0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: #1a1a1a;
+            border: 2px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 16px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            color: #dddddd;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .option:hover {
+            border-color: #00C853;
+            background: #1f1f1f;
+            transform: translateY(-1px);
+        }
+
+        .option.selected {
+            border-color: #00C853;
+            background: #0f2b1a;
+            color: white;
+            animation: pulse 0.4s ease;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(0, 200, 83, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 200, 83, 0);
+            }
+        }
+
+        /* Container do resultado */
+        #resultContainer {
+            display: none;
+        }
+
+        .result-box {
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid #2e2e2e;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: popIn 0.5s ease forwards;
+        }
+
+        @keyframes popIn {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .result-emoji {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        .result-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .result-text {
+            color: #bbbbbb;
+            margin-bottom: 28px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Bloco da oferta */
+        .offer {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 20px;
+            padding: 24px 20px;
+            text-align: left;
+            margin: 8px 0 0 0;
+        }
+
+        .offer h3 {
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .offer .desc {
+            color: #aaaaaa;
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+        }
+
+        .benefits {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .benefits li {
+            padding: 4px 0;
+            font-size: 0.95rem;
+            color: #e0e0e0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .bonus {
+            font-size: 0.95rem;
+            color: #ffd966;
+            margin-bottom: 18px;
+            font-weight: 500;
+            background: rgba(255, 217, 102, 0.08);
+            padding: 10px 12px;
+            border-radius: 10px;
+        }
+
+        .price-block {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #888888;
+            font-size: 1.2rem;
+        }
+
+        .new-price {
+            color: #00C853;
+            font-weight: 700;
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .countdown {
+            font-size: 0.9rem;
+            color: #ff6666;
+            margin-bottom: 20px;
+            font-weight: 600;
+            background: #1e0a0a;
+            padding: 10px 14px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-buy {
+            display: block;
+            background: #00C853;
+            color: #0a0a0a;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 16px;
+            border-radius: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 200, 83, 0.25);
+            letter-spacing: 0.3px;
+            animation: btnPulse 2s infinite;
+            margin-top: 4px;
+        }
+
+        @keyframes btnPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.6);
+            }
+            70% {
+                box-shadow: 0 0 0 14px rgba(0, 200, 83, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 200, 83, 0);
+            }
+        }
+
+        .btn-buy:hover {
+            background: #00e676;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 200, 83, 0.35);
+        }
+
+        .footer-note {
+            font-size: 0.8rem;
+            color: #777777;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .expired-message {
+            color: #ff6666;
+            font-weight: 600;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <div class="header">
+            <!-- Foto de perfil placeholder: altere o texto 'WV' ou insira uma imagem -->
+            <div class="avatar">WV</div>
+            <h1>Descobre o teu nível de vendas no WhatsApp em 2026</h1>
+        </div>
+
+        <!-- Barra de progresso -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Quiz (perguntas inseridas dinamicamente) -->
+        <div id="quizContainer"></div>
+
+        <!-- Resultado (oculto inicialmente) -->
+        <div id="resultContainer"></div>
+    </div>
+
+    <script>
+        (function() {
+            // ⚙️ CONFIGURAÇÕES
+            const CHECKOUT_LINK = "https://checkout.escalepay.com/6377030"; // Link de pagamento
+            const COUNTDOWN_MINUTES = 15; // Duração da oferta especial
+
+            // Banco de perguntas
+            const questions = [
+                {
+                    question: "Como descreves a tua relação com as vendas pelo WhatsApp hoje?",
+                    options: [
+                        { text: "A) Só uso para conversas pessoais, nunca vendi nada.", value: "A" },
+                        { text: "B) Já envio catálogos e uso os estados, mas as vendas são poucas.", value: "B" },
+                        { text: "C) Tenho lista de transmissão e fecho algumas vendas, mas sinto que podia vender muito mais.", value: "C" }
+                    ]
+                },
+                {
+                    question: "Qual é o teu maior desafio ao tentar vender pelo WhatsApp?",
+                    options: [
+                        { text: "A) Não sei por onde começar.", value: "A" },
+                        { text: "B) Falo com os clientes mas eles somem e não compram.", value: "B" },
+                        { text: "C) Quero escalar as minhas vendas sem ficar o dia inteiro no telemóvel.", value: "C" }
+                    ]
+                },
+                {
+                    question: "Quando pensas em WhatsApp, qual é a tua maior frustração?",
+                    options: [
+                        { text: "A) Parece que só funciona para quem já tem muitos contactos.", value: "A" },
+                        { text: "B) Eu mando mensagens, mas parece que estou a incomodar.", value: "B" },
+                        { text: "C) Não tenho um sistema organizado; perco encomendas e dinheiro.", value: "C" }
+                    ]
+                },
+                {
+                    question: "O que mais desejas alcançar com o WhatsApp nos próximos 3 meses?",
+                    options: [
+                        { text: "A) Fazer as minhas primeiras vendas online.", value: "A" },
+                        { text: "B) Duplicar o número de clientes que compram.", value: "B" },
+                        { text: "C) Criar um funil automático que venda por mim.", value: "C" }
+                    ]
+                },
+                {
+                    question: "Como preferes aprender novas estratégias?",
+                    options: [
+                        { text: "A) Com exemplos práticos e passo a passo.", value: "A" },
+                        { text: "B) Com scripts prontos para copiar e colar.", value: "B" },
+                        { text: "C) Com modelos que eu possa adaptar ao meu negócio.", value: "C" }
+                    ]
+                }
+            ];
+
+            // Resultados personalizados
+            const results = {
+                A: {
+                    emoji: "🚀",
+                    title: "És um Explorador do WhatsApp",
+                    text: "Ainda não começaste a vender, mas tens o desejo certo. A boa notícia? Em 2026, quem começar com as estratégias certas vai dominar o mercado moçambicano. O meu e-book foi feito exactamente para ti: mesmo sem contactos, vais aprender a atrair clientes, montar um catálogo irresistível e fechar a tua primeira venda esta semana."
+                },
+                B: {
+                    emoji: "📈",
+                    title: "És um Comunicador com Potência",
+                    text: "Já tens movimento, mas as conversas ainda não se transformam em dinheiro consistente. O que te falta é um sistema simples de follow‑up e gatilhos que fazem o cliente decidir comprar. No e-book revelo o método “Funil do Status” que em Moçambique está a duplicar vendas sem enviar spam."
+                },
+                C: {
+                    emoji: "💼",
+                    title: "És um Estratega do WhatsApp",
+                    text: "Já vendes, mas sabes que podes ganhar escala sem perder o toque pessoal. O e-book entrega o modelo completo de automação com listas de transmissão, etiquetas e respostas rápidas que funcionam no WhatsApp normal. Vais descobrir como libertar horas do teu dia e ainda assim vender mais."
+                }
+            };
+
+            // Estado do quiz
+            let currentStep = 0;
+            const answers = new Array(questions.length).fill(null);
+            let countdownInterval = null;
+
+            // Elementos do DOM
+            const quizContainer = document.getElementById('quizContainer');
+            const resultContainer = document.getElementById('resultContainer');
+            const progressFill = document.getElementById('progressFill');
+
+            function updateProgress() {
+                const percent = (currentStep / questions.length) * 100;
+                progressFill.style.width = percent + '%';
+            }
+
+            function renderQuestion() {
+                if (currentStep >= questions.length) {
+                    showResult();
+                    return;
+                }
+                updateProgress();
+
+                const q = questions[currentStep];
+                let html = `<div class="step active"><div class="question">${q.question}</div><div class="options">`;
+                q.options.forEach((opt) => {
+                    html += `<div class="option" data-value="${opt.value}" onclick="selectAnswer(${currentStep}, '${opt.value}', this)">${opt.text}</div>`;
+                });
+                html += `</div></div>`;
+                quizContainer.innerHTML = html;
+            }
+
+            window.selectAnswer = function(stepIndex, value, element) {
+                if (answers[stepIndex] !== null) return;
+
+                answers[stepIndex] = value;
+                const allOptions = element.parentElement.querySelectorAll('.option');
+                allOptions.forEach(opt => opt.classList.remove('selected'));
+                element.classList.add('selected');
+
+                setTimeout(() => {
+                    if (currentStep < questions.length - 1) {
+                        currentStep++;
+                        renderQuestion();
+                    } else {
+                        currentStep++;
+                        updateProgress();
+                        showResult();
+                    }
+                }, 400);
+            };
+
+            function getDominantProfile() {
+                const countA = answers.filter(a => a === 'A').length;
+                const countB = answers.filter(a => a === 'B').length;
+                const countC = answers.filter(a => a === 'C').length;
+                if (countA >= countB && countA >= countC) return 'A';
+                if (countB >= countA && countB >= countC) return 'B';
+                return 'C';
+            }
+
+            function startCountdown(durationMinutes, displayElement) {
+                let totalSeconds = durationMinutes * 60;
+                const countdownEl = displayElement;
+
+                function updateTimer() {
+                    const minutes = Math.floor(totalSeconds / 60);
+                    const seconds = totalSeconds % 60;
+                    countdownEl.textContent = `⏳ Oferta expira em: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                    if (totalSeconds <= 0) {
+                        clearInterval(countdownInterval);
+                        const offerBlock = document.querySelector('.offer');
+                        if (offerBlock) {
+                            offerBlock.innerHTML = '<p class="expired-message">⚠️ Esta oferta especial expirou. O e-book continua disponível pelo preço normal.</p>';
+                        }
+                    }
+                    totalSeconds--;
+                }
+
+                updateTimer();
+                countdownInterval = setInterval(updateTimer, 1000);
+            }
+
+            function showResult() {
+                quizContainer.innerHTML = '';
+                quizContainer.style.display = 'none';
+                resultContainer.style.display = 'block';
+
+                const profile = getDominantProfile();
+                const r = results[profile];
+
+                const html = `
+                    <div class="result-box">
+                        <div class="result-emoji">${r.emoji}</div>
+                        <div class="result-title">${r.title}</div>
+                        <div class="result-text">${r.text}</div>
+
+                        <div class="offer">
+                            <h3>📘 E-BOOK: COMO VENDER NO WHATSAPP EM 2026</h3>
+                            <p class="desc">O guia prático actualizado para Moçambique – com estratégias que funcionam no WhatsApp normal, sem Business API, sem robôs.</p>
+                            <ul class="benefits">
+                                <li>✅ Transforma o teu perfil numa máquina de vendas</li>
+                                <li>✅ Os 3 tipos de status que vendem enquanto dormes</li>
+                                <li>✅ Scripts de conversa que convertem 5x mais</li>
+                                <li>✅ Método simples de follow‑up para não perder clientes</li>
+                                <li>✅ Como organizar encomendas e pagamentos (M-Pesa, Emola, etc.)</li>
+                            </ul>
+                            <p class="bonus">🎁 Bónus (só hoje): 10 templates de mensagens + mini‑treino em áudio “O segredo da primeira venda em 24h”</p>
+                            <div class="price-block">
+                                <span class="old-price">720 MZN</span>
+                                <span class="new-price">430 MZN</span>
+                            </div>
+                            <div class="countdown" id="countdownDisplay"></div>
+                            <a href="${CHECKOUT_LINK}" class="btn-buy" target="_blank">👉 QUERO O E-BOOK AGORA – COMPRAR AGORA</a>
+                        </div>
+                        <div class="footer-note">Pagamento seguro via M-Pesa / M-Kesh. Acesso imediato após confirmação.</div>
+                    </div>
+                `;
+
+                resultContainer.innerHTML = html;
+
+                const countdownEl = document.getElementById('countdownDisplay');
+                if (countdownEl) {
+                    startCountdown(COUNTDOWN_MINUTES, countdownEl);
+                }
+            }
+
+            // Iniciar quiz
+            renderQuestion();
+        })();
+    </script>
+</body>
+</html>
